@@ -1,14 +1,9 @@
 let editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
-editor.session.setMode("ace/mode/python");
-
- document.getElementById("lang").addEventListener("change", function(){
-  let selectedLang = this.value;
-  editor.session.setMode( `ace/mode/${selectedLang}`);
- });
+editor.session.setMode("ace/mode/text");
 
 // Funzione per aprire un file locale
-function loadFile() {
+function openFile() {
   const input = document.createElement("input");
   input.type = "file";
 
@@ -31,28 +26,13 @@ function loadFile() {
 // Funzione per salvare il contenuto su file
 function saveFile() {
   const content = editor.getValue();
-
-  // 🔧 Ottieni il valore selezionato nel momento in cui premi "Salva"
-  const lang = document.getElementById("lang").value;
-
-  const extensions = {
-    python: "py",
-    html: "html"
-  };
-
-  const ext = extensions[lang] || "txt";
-  const filename = "file." + ext;
-
-  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+  const blob = new Blob([content], { type: "text/plain" });
   const url = URL.createObjectURL(blob);
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = filename;
+  a.download = "file.txt"; // nome file di default
   a.click();
 
   URL.revokeObjectURL(url); // libera la memoria
 }
-
- 
-

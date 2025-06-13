@@ -32,27 +32,19 @@ function loadFile() {
 function saveFile() {
   const content = editor.getValue();
 
-  // 🔧 Ottieni il valore selezionato nel momento in cui premi "Salva"
-  const lang = document.getElementById("lang").value;
-
   const extensions = {
-    python: "py",
-    html: "html"
+    python : "py",
+    html : "html"
   };
 
   const ext = extensions[lang] || "txt";
-  const filename = "file." + ext;
-
-  const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-
+  const filename = "file."+ext;
   const a = document.createElement("a");
   a.href = url;
-  a.download = filename;
+  a.download = filename // nome file di default
   a.click();
 
   URL.revokeObjectURL(url); // libera la memoria
 }
-
  
 

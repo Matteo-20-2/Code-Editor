@@ -11,14 +11,12 @@ body{
     padding: 10px;
     display: flex;
     justify-content: space-between;
-    
 }
 
 #lang{
-   background-color: #444;
+   background-colo
+   : #444;
    border: 0;
-   color: white;
-   padding: 8px 12px;
 }
 
 #editor{

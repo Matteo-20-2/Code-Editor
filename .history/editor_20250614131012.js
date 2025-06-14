@@ -1,11 +1,5 @@
 let editor = ace.edit("editor");
-
-ace.require("ace/ext/language_tools");
-editor.setOptions({
-  enableBasicAutocompletion: true,
-  enableLiveAutocompletion: true,
-  enableSnippets: true
-});
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ext-language_tools.min.js"></script>
 
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");

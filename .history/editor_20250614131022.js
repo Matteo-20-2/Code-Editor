@@ -1,5 +1,4 @@
 let editor = ace.edit("editor");
-
 ace.require("ace/ext/language_tools");
 editor.setOptions({
   enableBasicAutocompletion: true,

@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <title>Editor</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ace.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ext-language_tools.min.js" crossorigin="anonymous"></script>
 
@@ -20,17 +18,16 @@
                 <option value="html">HTML</option>
                 <option value="c">C</option>
                 <option value="cpp">C++</option>
-                <option value="txt">text</option>
             </select>
         </div>
         <div>
             <button onclick="openSaveAsModal()"> 💾 Save </button>
             <button onclick="loadFile()"> 📂Load </button>
-            <button onclick="createNewTab()"> ➕ New Tab </button>
+            <button onclick="createNewTab()"></button>
        </div>
     </div>
 
-    <div id="tabs">  </div>
+    <div id="tabs"></div>
 
     <div id="editor" style="height: 500px; width: 100%;"></div>
 

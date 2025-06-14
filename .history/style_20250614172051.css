@@ -1,7 +1,3 @@
-body, button, select, input, label, #toolbar, #tabs {
-  font-family: 'Inter', sans-serif;
-}
-
 body{
     margin: 0;
     display: flex;
@@ -15,9 +11,7 @@ body{
     padding: 10px;
     display: flex;
     justify-content: space-between;
-    font-weight: 600;
-    font-size: 20px;
-    padding: 10px;
+    
 }
 
 #lang{
@@ -70,12 +64,5 @@ button:hover{
 
 .tab{
     padding: 5px 10px;
-    background-color: #444;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.tab.active{
-    background-color: #666;
-    font-weight: bold;
+    background-color: ;
 }

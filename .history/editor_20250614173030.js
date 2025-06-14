@@ -1,3 +1,5 @@
+
+
 ace.require("ace/ext/language_tools");
 let editor = ace.edit("editor", {
   mode: "ace/mode/python",
@@ -19,6 +21,7 @@ editor.setOptions({
 window.addEventListener('beforeunload', function (e) {
   e.preventDefault();
   e.returnValue = '';
+  
 });
 
 let fontSize = 14; 
@@ -33,19 +36,22 @@ window.addEventListener("wheel", function (e) {
     } else {
       fontSize = Math.max(fontSize - 1, 8);  
     }
+
     editor.setFontSize(fontSize);
   }
 }, { passive: false });
 
+
+
 document.getElementById("lang").addEventListener("change", function(){
-  let selectedLang = this.value;
+ let selectedLang = this.value;
   const modes = {
     python: "python",
     html: "html",
     c: "c_cpp",
-    cpp: "c_cpp",
-    text: "text"
+    cpp: "c_cpp"
   };
+
   const mode = modes[selectedLang] || "text";
   editor.session.setMode(`ace/mode/${mode}`);
 });
@@ -59,7 +65,8 @@ function loadFile() {
     const reader = new FileReader();
 
     reader.onload = () => {
-      const content = reader.result;
+      
+      editor.setValue(reader.result, -1); 
 
       const ext = file.name.split('.').pop().toLowerCase();
 
@@ -74,32 +81,20 @@ function loadFile() {
         txt: "text"
       };
 
+      const mode = extToMode[ext] || "text";
+      editor.session.setMode(`ace/mode/${mode}`);
+
       const extToLang = {
         py: "python",
         html: "html",
         c: "c",
-        cpp: "cpp",
-        txt: "text"
+        cpp: "cpp"
       };
-
-      const lang = extToLang[ext] || "text";
-      const mode = extToMode[ext] || "text";
-
-      const session = ace.createEditSession(content, `ace/mode/${mode}`);
-      const tab = {
-        name: file.name,
-        lang: lang,
-        session: session
-      };
-
-      tabs.push(tab);
-      setActiveTab(tab);
-      renderTabs();
-
-      // Update the language selector
-      document.getElementById("lang").value = lang;
+      if(extToLang[ext]){
+        document.getElementById("lang").value = extToLang[ext];
+      }
     };
-
+    createNewTab(file.name, ext)
     if (file) {
       reader.readAsText(file);
     }
@@ -107,6 +102,7 @@ function loadFile() {
 
   input.click();
 }
+
 
 function openSaveAsModal() {
   document.getElementById("fileNameInput").value = "";
@@ -121,7 +117,7 @@ function confirmSave() {
   const inputName = document.getElementById("fileNameInput").value.trim();
 
   if (!inputName) {
-    alert("Please enter a valid file name.");
+    alert("Inserisci un nome valido per il file.");
     return;
   }
 
@@ -137,17 +133,11 @@ function saveFile(customName) {
     python: "py",
     html: "html",
     c: "c",
-    cpp: "cpp",
-    text: "txt"
+    cpp: "cpp"
   };
 
   const ext = extensions[lang] || "txt";
   const filename = customName + "." + ext;
-
-  if(currentTab){
-    currentTab.name = filename;
-    renderTabs();
-  }
 
   const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -160,7 +150,7 @@ function saveFile(customName) {
   URL.revokeObjectURL(url);
 }
 
-function createNewTab(name = "Untitled.py", lang = "python") {
+function createNewTab(name = "Untitled", lang = "python") {
   const session = ace.createEditSession("", `ace/mode/${lang}`);
   const tab = { name, lang, session };
 
@@ -174,28 +164,16 @@ function renderTabs() {
   tabsContainer.innerHTML = "";
 
   tabs.forEach((tab, index) => {
-    const tabButton = document.createElement("button");
-    tabButton.className = "tab-button";
-    tabButton.textContent = tab.name;
+    const tabEl = document.createElement("div");
+    tabEl.className = "tab" + (tab === currentTab ? " active" : "");
+    tabEl.textContent = tab.name;
 
-    if (tab === currentTab) {
-      tabButton.classList.add("active");
-    }
-
-    tabButton.onclick = () => {
+    tabEl.addEventListener("click", () => {
       setActiveTab(tab);
-    };
+      renderTabs();
+    });
 
-    const closeBtn = document.createElement("span");
-    closeBtn.textContent = " ❌";
-    closeBtn.className = "close-tab";
-    closeBtn.onclick = (e) => {
-      e.stopPropagation(); 
-      closeTab(index);
-    };
-
-    tabButton.appendChild(closeBtn);
-    tabsContainer.appendChild(tabButton);
+    tabsContainer.appendChild(tabEl);
   });
 }
 
@@ -213,24 +191,13 @@ document.getElementById("lang").addEventListener("change", function () {
       python: "python",
       html: "html",
       c: "c_cpp",
-      cpp: "c_cpp",
-      text: "text"
+      cpp: "c_cpp"
     };
     const mode = modeMap[selectedLang] || "text";
     currentTab.session.setMode(`ace/mode/${mode}`);
   }
 });
 
-function closeTab(index) {
-  tabs.splice(index, 1);
-  if (tabs.length > 0) {
-    setActiveTab(tabs[tabs.length - 1]); 
-    editor.setValue("");
-    currentTab = null;
-  }
-  renderTabs();
-}
-
-createNewTab();
-
+ 
+createNewTab("Untitled.py", "python");
 

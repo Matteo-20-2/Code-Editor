@@ -1,7 +1,11 @@
 
 
 ace.require("ace/ext/language_tools");
-let editor = ace.edit("editor");
+editor.setOptions({
+  enableBasicAutocompletion: true,
+  enableLiveAutocompletion: true,
+  enableSnippets: true
+});
 
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");

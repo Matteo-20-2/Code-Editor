@@ -1,14 +1,11 @@
 let editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
-let hasUnsavedChanges = false;
 
-window.addEventListener('beforeunload', function (e) {
+window.addEventListener('beforeunload', function(e){
   e.preventDefault();
-  e.returnValue = '';
   
 });
-
 
 document.getElementById("lang").addEventListener("change", function(){
  let selectedLang = this.value;

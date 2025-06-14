@@ -1,17 +1,11 @@
 let editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
-let hasUnsavedChanges = false;
-
-window.addEventListener('beforeunload', function (e) {
-  e.preventDefault();
-  e.returnValue = '';
-  
-});
-
 
 document.getElementById("lang").addEventListener("change", function(){
- let selectedLang = this.value;
+
+});
+  let selectedLang = this.value;
   const modes = {
     python: "python",
     html: "html",
@@ -21,8 +15,10 @@ document.getElementById("lang").addEventListener("change", function(){
 
   const mode = modes[selectedLang] || "text";
   editor.session.setMode(`ace/mode/${mode}`);
-});
 
+}
+ 
+// Funzione per aprire un file locale
 function loadFile() {
   const input = document.createElement("input");
   input.type = "file";
@@ -32,10 +28,12 @@ function loadFile() {
     const reader = new FileReader();
 
     reader.onload = () => {
-      editor.setValue(reader.result, -1); 
+      editor.setValue(reader.result, -1); // carica il testo senza scrollare
 
+      // Prendi l'estensione dal nome del file
       const ext = file.name.split('.').pop().toLowerCase();
 
+      // Mappa estensioni -> modalità ace
       const extToMode = {
         py: "python",
         html: "html",
@@ -88,8 +86,8 @@ function confirmSave() {
     return;
   }
 
-  closeModal(); 
-  saveFile(inputName);
+  closeModal(); // chiudi la finestra
+  saveFile(inputName); // usa direttamente la funzione saveFile
 }
 
 function saveFile(customName) {

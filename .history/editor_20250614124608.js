@@ -4,8 +4,9 @@ editor.session.setMode("ace/mode/python");
 let hasUnsavedChanges = false;
 
 window.addEventListener('beforeunload', function (e) {
-  e.preventDefault();
-  e.returnValue = '';
+ 
+    e.preventDefault();
+    e.returnValue = '';
   
 });
 

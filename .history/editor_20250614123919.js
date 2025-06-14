@@ -1,14 +1,6 @@
 let editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
-let hasUnsavedChanges = false;
-
-window.addEventListener('beforeunload', function (e) {
-  e.preventDefault();
-  e.returnValue = '';
-  
-});
-
 
 document.getElementById("lang").addEventListener("change", function(){
  let selectedLang = this.value;
@@ -34,6 +26,7 @@ function loadFile() {
     reader.onload = () => {
       editor.setValue(reader.result, -1); 
 
+      // Prendi l'estensione dal nome del file
       const ext = file.name.split('.').pop().toLowerCase();
 
       const extToMode = {
@@ -88,8 +81,8 @@ function confirmSave() {
     return;
   }
 
-  closeModal(); 
-  saveFile(inputName);
+  closeModal(); // chiudi la finestra
+  saveFile(inputName); // usa direttamente la funzione saveFile
 }
 
 function saveFile(customName) {

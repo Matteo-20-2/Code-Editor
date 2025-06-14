@@ -1,18 +1,14 @@
 let editor = ace.edit("editor");
 editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
-let hasUnsavedChanges = false;
 
-window.addEventListener('beforeunload', function (e) {
-  e.preventDefault();
-  e.returnValue = '';
-  
-});
+document.getElementById("lang").addEventListener("change", changeSintax)
 
 
-document.getElementById("lang").addEventListener("change", function(){
- let selectedLang = this.value;
-  const modes = {
+function changeSintax(){
+
+  let selectedLang = this.value;
+    const modes = {
     python: "python",
     html: "html",
     c: "c_cpp",
@@ -21,8 +17,10 @@ document.getElementById("lang").addEventListener("change", function(){
 
   const mode = modes[selectedLang] || "text";
   editor.session.setMode(`ace/mode/${mode}`);
-});
 
+}
+ 
+// Funzione per aprire un file locale
 function loadFile() {
   const input = document.createElement("input");
   input.type = "file";
@@ -32,34 +30,7 @@ function loadFile() {
     const reader = new FileReader();
 
     reader.onload = () => {
-      editor.setValue(reader.result, -1); 
-
-      const ext = file.name.split('.').pop().toLowerCase();
-
-      const extToMode = {
-        py: "python",
-        html: "html",
-        c: "c_cpp",
-        cpp: "c_cpp",
-        h: "c_cpp",
-        js: "javascript",
-        java: "java",
-        txt: "text"
-      };
-
-      const mode = extToMode[ext] || "text";
-      editor.session.setMode(`ace/mode/${mode}`);
-
-      // Imposta anche la select per mostrare la lingua corretta
-      const extToLang = {
-        py: "python",
-        html: "html",
-        c: "c",
-        cpp: "cpp"
-      };
-      if(extToLang[ext]){
-        document.getElementById("lang").value = extToLang[ext];
-      }
+      editor.setValue(reader.result, -1); // -1: nessuno scroll
     };
 
     if (file) {
@@ -67,7 +38,7 @@ function loadFile() {
     }
   };
 
-  input.click();
+  input.click(); // simula il click sul file picker
 }
 
 
@@ -88,8 +59,8 @@ function confirmSave() {
     return;
   }
 
-  closeModal(); 
-  saveFile(inputName);
+  closeModal(); // chiudi la finestra
+  saveFile(inputName); // usa direttamente la funzione saveFile
 }
 
 function saveFile(customName) {

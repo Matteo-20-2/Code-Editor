@@ -5,7 +5,7 @@ let hasUnsavedChanges = false;
 
 window.addEventListener('beforeunload', function (e) {
   e.preventDefault();
-  e.returnValue = '';
+    e.returnValue = '';
   
 });
 

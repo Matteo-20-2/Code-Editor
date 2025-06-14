@@ -3,9 +3,15 @@ editor.setTheme("ace/theme/monokai");
 editor.session.setMode("ace/mode/python");
 let hasUnsavedChanges = false;
 
+// Aggiorna questa variabile quando l'utente modifica il testo
+editor.on('change', function() {
+  hasUnsavedChanges = true;
+});
+
 window.addEventListener('beforeunload', function (e) {
-  e.preventDefault();
-  e.returnValue = '';
+ 
+    e.preventDefault();
+    e.returnValue = '';
   
 });
 

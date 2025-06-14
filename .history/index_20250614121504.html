@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.3/ace.js" crossorigin="anonymous"></script>
+    
+</head>
+
+<body>
+    <div id="toolbar"> Code Editor
+        <div>
+            <select name="languages" id="lang">
+                <option value="python">Python</option>
+                <option value="html">HTML</option>
+                <option value="c">C</option>
+                <option value="cpp">C++</option>
+            </select>
+        </div>
+        <div>
+            <button onclick="saveFile()"> 💾 Save </button>
+            <button onclick="loadFile()"> 📂Load </button>
+       </div>
+    </div>
+
+    <div id="editor" style="height: 500px; width: 100%;"></div>
+
+    <div id="saveModal"> 
+        <label for="fileNameInput">File Name:</label>
+        <input type="text" id="fileNameInput" placeholder="es: myfile.py">
+        <button></button>
+    </div>
+
+    <script src="editor.js"></script>
+</body>
+</html>

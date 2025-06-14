@@ -1,3 +1,5 @@
+
+
 ace.require("ace/ext/language_tools");
 let editor = ace.edit("editor", {
   mode: "ace/mode/python",
@@ -19,6 +21,7 @@ editor.setOptions({
 window.addEventListener('beforeunload', function (e) {
   e.preventDefault();
   e.returnValue = '';
+  
 });
 
 let fontSize = 14; 
@@ -33,19 +36,22 @@ window.addEventListener("wheel", function (e) {
     } else {
       fontSize = Math.max(fontSize - 1, 8);  
     }
+
     editor.setFontSize(fontSize);
   }
 }, { passive: false });
 
+
+
 document.getElementById("lang").addEventListener("change", function(){
-  let selectedLang = this.value;
+ let selectedLang = this.value;
   const modes = {
     python: "python",
     html: "html",
     c: "c_cpp",
-    cpp: "c_cpp",
-    text: "text"
+    cpp: "c_cpp"
   };
+
   const mode = modes[selectedLang] || "text";
   editor.session.setMode(`ace/mode/${mode}`);
 });
@@ -78,13 +84,13 @@ function loadFile() {
         py: "python",
         html: "html",
         c: "c",
-        cpp: "cpp",
-        txt: "text"
+        cpp: "cpp"
       };
 
       const lang = extToLang[ext] || "text";
       const mode = extToMode[ext] || "text";
 
+      // Crea un nuovo tab con il contenuto letto
       const session = ace.createEditSession(content, `ace/mode/${mode}`);
       const tab = {
         name: file.name,
@@ -96,7 +102,7 @@ function loadFile() {
       setActiveTab(tab);
       renderTabs();
 
-      // Update the language selector
+      // aggiorna anche la select
       document.getElementById("lang").value = lang;
     };
 
@@ -107,6 +113,8 @@ function loadFile() {
 
   input.click();
 }
+
+
 
 function openSaveAsModal() {
   document.getElementById("fileNameInput").value = "";
@@ -121,7 +129,7 @@ function confirmSave() {
   const inputName = document.getElementById("fileNameInput").value.trim();
 
   if (!inputName) {
-    alert("Please enter a valid file name.");
+    alert("Inserisci un nome valido per il file.");
     return;
   }
 
@@ -137,17 +145,11 @@ function saveFile(customName) {
     python: "py",
     html: "html",
     c: "c",
-    cpp: "cpp",
-    text: "txt"
+    cpp: "cpp"
   };
 
   const ext = extensions[lang] || "txt";
   const filename = customName + "." + ext;
-
-  if(currentTab){
-    currentTab.name = filename;
-    renderTabs();
-  }
 
   const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -160,7 +162,7 @@ function saveFile(customName) {
   URL.revokeObjectURL(url);
 }
 
-function createNewTab(name = "Untitled.py", lang = "python") {
+function createNewTab(name = "Untitled", lang = "python") {
   const session = ace.createEditSession("", `ace/mode/${lang}`);
   const tab = { name, lang, session };
 
@@ -178,7 +180,7 @@ function renderTabs() {
     tabButton.className = "tab-button";
     tabButton.textContent = tab.name;
 
-    if (tab === currentTab) {
+    if (tab === activeTab) {
       tabButton.classList.add("active");
     }
 
@@ -186,11 +188,12 @@ function renderTabs() {
       setActiveTab(tab);
     };
 
+    // Crea il pulsante X
     const closeBtn = document.createElement("span");
     closeBtn.textContent = " ❌";
     closeBtn.className = "close-tab";
     closeBtn.onclick = (e) => {
-      e.stopPropagation(); 
+      e.stopPropagation(); // evita che venga attivata anche la selezione della tab
       closeTab(index);
     };
 
@@ -198,6 +201,7 @@ function renderTabs() {
     tabsContainer.appendChild(tabButton);
   });
 }
+
 
 function setActiveTab(tab) {
   currentTab = tab;
@@ -213,24 +217,18 @@ document.getElementById("lang").addEventListener("change", function () {
       python: "python",
       html: "html",
       c: "c_cpp",
-      cpp: "c_cpp",
-      text: "text"
+      cpp: "c_cpp"
     };
     const mode = modeMap[selectedLang] || "text";
     currentTab.session.setMode(`ace/mode/${mode}`);
   }
 });
 
-function closeTab(index) {
-  tabs.splice(index, 1);
-  if (tabs.length > 0) {
-    setActiveTab(tabs[tabs.length - 1]); 
-    editor.setValue("");
-    currentTab = null;
-  }
-  renderTabs();
+function closeTab(){
+  currentTab
+
 }
 
-createNewTab();
-
+ 
+createNewTab("Untitled.py", "python");
 

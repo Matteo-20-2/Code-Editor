@@ -85,6 +85,7 @@ function loadFile() {
       const lang = extToLang[ext] || "text";
       const mode = extToMode[ext] || "text";
 
+      // Create a new tab with the loaded content
       const session = ace.createEditSession(content, `ace/mode/${mode}`);
       const tab = {
         name: file.name,
@@ -224,7 +225,8 @@ document.getElementById("lang").addEventListener("change", function () {
 function closeTab(index) {
   tabs.splice(index, 1);
   if (tabs.length > 0) {
-    setActiveTab(tabs[tabs.length - 1]); 
+    setActiveTab(tabs[tabs.length - 1]); // switch to last remaining tab
+  } else {
     editor.setValue("");
     currentTab = null;
   }

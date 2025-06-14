@@ -85,6 +85,7 @@ function loadFile() {
       const lang = extToLang[ext] || "text";
       const mode = extToMode[ext] || "text";
 
+      // Create a new tab with the loaded content
       const session = ace.createEditSession(content, `ace/mode/${mode}`);
       const tab = {
         name: file.name,

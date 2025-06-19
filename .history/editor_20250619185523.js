@@ -70,8 +70,7 @@ document.getElementById("lang").addEventListener("change", function () {
     cpp: "cpp",
     java: "java",
     text: "txt",
-    javascript: "js",
-    json: "json"
+    javascript: "js"
   };
 
   if (currentTab) {
@@ -237,21 +236,5 @@ function closeTab(index) {
   }
   renderTabs();
 }
-
-function saveAllFiles() {
-  tabs.forEach(tab => {
-    const content = tab.session.getValue();
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = tab.name || "Untitled.txt";
-    a.click();
-
-    URL.revokeObjectURL(url);
-  });
-}
-
 
 createNewTab();

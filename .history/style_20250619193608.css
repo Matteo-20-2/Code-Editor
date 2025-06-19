@@ -30,7 +30,7 @@ body{
 #editor{
     flex: 1;
     height: 100%;
-    touch-action: pan-y;
+    touch-action: ;
 }
 
 button{

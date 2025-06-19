@@ -80,25 +80,27 @@ button:hover{
     font-weight: bold;
 }
 
+/* Rendi il toolbar più flessibile e adattabile */
 #toolbar {
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
 }
 
-
+/* Rendi i contenitori nel toolbar adattabili su schermi stretti */
 #toolbar > div {
     display: flex;
     flex-wrap: wrap;
     gap: 5px;
 }
 
-
+/* Permetti lo scrolling orizzontale ai tab su mobile */
 #tabs {
     overflow-x: auto;
     white-space: nowrap;
 }
 
+/* I bottoni e il select si adattano allo spazio disponibile */
 button, #lang {
     flex: 1 1 auto;
     min-width: 100px;

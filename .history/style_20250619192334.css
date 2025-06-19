@@ -80,6 +80,7 @@ button:hover{
     font-weight: bold;
 }
 
+/* Rendi il toolbar più flessibile e adattabile */
 #toolbar {
     flex-wrap: wrap;
     gap: 10px;

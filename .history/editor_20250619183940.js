@@ -16,29 +16,6 @@ editor.setOptions({
   fontFamily: "monospace"
 });
 
-const langToModeMap = {
-  python: "python",
-  html: "html",
-  c: "c_cpp",
-  cpp: "c_cpp",
-  java: "java",
-  text: "text",
-  javascript: "javascript",
-  json: "json"
-};
-
-const extToLang = {
-  py: "python",
-  html: "html",
-  c: "c",
-  cpp: "cpp",
-  h: "c",
-  js: "javascript",
-  java: "java",
-  txt: "text",
-  json: "json"
-};
-
 window.addEventListener('beforeunload', function (e) {
   e.preventDefault();
   e.returnValue = '';
@@ -60,34 +37,19 @@ window.addEventListener("wheel", function (e) {
   }
 }, { passive: false });
 
-document.getElementById("lang").addEventListener("change", function () {
-  const selectedLang = this.value;
-  const mode = langToModeMap[selectedLang] || "text";
-  const extensions = {
-    python: "py",
+document.getElementById("lang").addEventListener("change", function(){
+  let selectedLang = this.value;
+  const modes = {
+    python: "python",
     html: "html",
-    c: "c",
-    cpp: "cpp",
+    c: "c_cpp",
+    cpp: "c_cpp",
     java: "java",
-    text: "txt",
-    javascript: "js",
-    json: "json"
+    text: "text"
   };
-
-  if (currentTab) {
-    currentTab.lang = selectedLang;
-    currentTab.session.setMode(`ace/mode/${mode}`);
-
-    // Aggiorna nome del tab se è ancora "Untitled..."
-    if (currentTab.name.startsWith("Untitled")) {
-      currentTab.name = `Untitled.${extensions[selectedLang] || "txt"}`;
-      renderTabs();
-    }
-  } else {
-    editor.session.setMode(`ace/mode/${mode}`);
-  }
+  const mode = modes[selectedLang] || "text";
+  editor.session.setMode(`ace/mode/${mode}`);
 });
-
 
 function loadFile() {
   const input = document.createElement("input");
@@ -99,10 +61,31 @@ function loadFile() {
 
     reader.onload = () => {
       const content = reader.result;
+
       const ext = file.name.split('.').pop().toLowerCase();
 
+      const extToMode = {
+        py: "python",
+        html: "html",
+        c: "c_cpp",
+        cpp: "c_cpp",
+        h: "c_cpp",
+        js: "javascript",
+        java: "java",
+        txt: "text"
+      };
+
+      const extToLang = {
+        py: "python",
+        html: "html",
+        c: "c",
+        cpp: "cpp",
+        java: "java",
+        txt: "text"
+      };
+
       const lang = extToLang[ext] || "text";
-      const mode = langToModeMap[lang] || "text";
+      const mode = extToMode[ext] || "text";
 
       const session = ace.createEditSession(content, `ace/mode/${mode}`);
       const tab = {
@@ -115,6 +98,7 @@ function loadFile() {
       setActiveTab(tab);
       renderTabs();
 
+      // Update the language selector
       document.getElementById("lang").value = lang;
     };
 
@@ -157,15 +141,13 @@ function saveFile(customName) {
     c: "c",
     cpp: "cpp",
     java: "java",
-    text: "txt",
-    javascript: "js",
-    json: "json"
+    text: "txt"
   };
 
   const ext = extensions[lang] || "txt";
   const filename = customName + "." + ext;
 
-  if (currentTab) {
+  if(currentTab){
     currentTab.name = filename;
     renderTabs();
   }
@@ -182,8 +164,7 @@ function saveFile(customName) {
 }
 
 function createNewTab(name = "Untitled.py", lang = "python") {
-  const mode = langToModeMap[lang] || "text";
-  const session = ace.createEditSession("", `ace/mode/${mode}`);
+  const session = ace.createEditSession("", `ace/mode/${lang}`);
   const tab = { name, lang, session };
 
   tabs.push(tab);
@@ -227,31 +208,33 @@ function setActiveTab(tab) {
   document.getElementById("lang").value = tab.lang;
 }
 
+document.getElementById("lang").addEventListener("change", function () {
+  const selectedLang = this.value;
+  if (currentTab) {
+    currentTab.lang = selectedLang;
+    const modeMap = {
+      python: "python",
+      html: "html",
+      c: "c_cpp",
+      cpp: "c_cpp",
+      java: "java",
+      text: "text"
+    };
+    const mode = modeMap[selectedLang] || "text";
+    currentTab.session.setMode(`ace/mode/${mode}`);
+  }
+});
+
 function closeTab(index) {
   tabs.splice(index, 1);
   if (tabs.length > 0) {
-    setActiveTab(tabs[tabs.length - 1]);
-  } else {
+    setActiveTab(tabs[tabs.length - 1]); 
     editor.setValue("");
     currentTab = null;
   }
   renderTabs();
 }
 
-function saveAllFiles() {
-  tabs.forEach(tab => {
-    const content = tab.session.getValue();
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = tab.name || "Untitled.txt";
-    a.click();
-
-    URL.revokeObjectURL(url);
-  });
-}
-
-
 createNewTab();
+
+

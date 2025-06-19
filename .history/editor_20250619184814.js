@@ -36,7 +36,7 @@ const extToLang = {
   js: "javascript",
   java: "java",
   txt: "text",
-  json: "json"
+  json: ""
 };
 
 window.addEventListener('beforeunload', function (e) {
@@ -63,31 +63,13 @@ window.addEventListener("wheel", function (e) {
 document.getElementById("lang").addEventListener("change", function () {
   const selectedLang = this.value;
   const mode = langToModeMap[selectedLang] || "text";
-  const extensions = {
-    python: "py",
-    html: "html",
-    c: "c",
-    cpp: "cpp",
-    java: "java",
-    text: "txt",
-    javascript: "js",
-    json: "json"
-  };
-
   if (currentTab) {
     currentTab.lang = selectedLang;
     currentTab.session.setMode(`ace/mode/${mode}`);
-
-    // Aggiorna nome del tab se è ancora "Untitled..."
-    if (currentTab.name.startsWith("Untitled")) {
-      currentTab.name = `Untitled.${extensions[selectedLang] || "txt"}`;
-      renderTabs();
-    }
   } else {
     editor.session.setMode(`ace/mode/${mode}`);
   }
 });
-
 
 function loadFile() {
   const input = document.createElement("input");
@@ -158,8 +140,7 @@ function saveFile(customName) {
     cpp: "cpp",
     java: "java",
     text: "txt",
-    javascript: "js",
-    json: "json"
+    javascript: "js"
   };
 
   const ext = extensions[lang] || "txt";
@@ -237,21 +218,5 @@ function closeTab(index) {
   }
   renderTabs();
 }
-
-function saveAllFiles() {
-  tabs.forEach(tab => {
-    const content = tab.session.getValue();
-    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = tab.name || "Untitled.txt";
-    a.click();
-
-    URL.revokeObjectURL(url);
-  });
-}
-
 
 createNewTab();

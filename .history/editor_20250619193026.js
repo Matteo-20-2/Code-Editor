@@ -48,8 +48,6 @@ let fontSize = 14;
 let tabs = [];
 let currentTab = null;
 
-
-//Zoom With Mouse
 window.addEventListener("wheel", function (e) {
   if (e.ctrlKey) {
     e.preventDefault(); 
@@ -62,50 +60,6 @@ window.addEventListener("wheel", function (e) {
   }
 }, { passive: false });
 
-
-//Zoom with Touch
-let lastTouchDist = null;
-
-function getTouchDistance(touches) {
-  const [touch1, touch2] = touches;
-  const dx = touch1.pageX - touch2.pageX;
-  const dy = touch1.pageY - touch2.pageY;
-  return Math.sqrt(dx * dx + dy * dy);
-}
-
-editor.container.addEventListener('touchstart', function(e) {
-  if (e.touches.length === 2) {
-    lastTouchDist = getTouchDistance(e.touches);
-    e.preventDefault();
-  }
-}, { passive: false });
-
-editor.container.addEventListener('touchmove', function(e) {
-  if (e.touches.length === 2 && lastTouchDist !== null) {
-    const newDist = getTouchDistance(e.touches);
-    const zoomSensitivity = 0.1; // regola la velocità zoom
-
-    if (newDist > lastTouchDist + 5) {
-      // zoom in
-      fontSize = Math.min(fontSize + zoomSensitivity, 40);
-      editor.setFontSize(fontSize);
-      lastTouchDist = newDist;
-    } else if (newDist < lastTouchDist - 5) {
-      // zoom out
-      fontSize = Math.max(fontSize - zoomSensitivity, 8);
-      editor.setFontSize(fontSize);
-      lastTouchDist = newDist;
-    }
-
-    e.preventDefault();
-  }
-}, { passive: false });
-
-editor.container.addEventListener('touchend', function(e) {
-  if (e.touches.length < 2) {
-    lastTouchDist = null;
-  }
-});
 
 
 document.getElementById("lang").addEventListener("change", function () {

@@ -62,8 +62,6 @@ window.addEventListener("wheel", function (e) {
   }
 }, { passive: false });
 
-
-//Zoom with Touch
 let lastTouchDist = null;
 
 function getTouchDistance(touches) {

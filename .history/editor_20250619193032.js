@@ -48,8 +48,6 @@ let fontSize = 14;
 let tabs = [];
 let currentTab = null;
 
-
-//Zoom With Mouse
 window.addEventListener("wheel", function (e) {
   if (e.ctrlKey) {
     e.preventDefault(); 
@@ -62,8 +60,6 @@ window.addEventListener("wheel", function (e) {
   }
 }, { passive: false });
 
-
-//Zoom with Touch
 let lastTouchDist = null;
 
 function getTouchDistance(touches) {
